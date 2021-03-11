@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="WhatsAppClient:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/WhatsAppClient_jar</output-path>
+    <root id="archive" name="WhatsAppClient.jar">
+      <element id="module-output" name="WhatsAppClient" />
+    </root>
+  </artifact>
+</component>

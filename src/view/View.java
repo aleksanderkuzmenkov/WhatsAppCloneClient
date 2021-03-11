@@ -68,8 +68,6 @@ public class View extends JFrame {
 
         cp.add(gridPanel, BorderLayout.CENTER);
 
-//        cp.add(rightSide, BorderLayout.EAST);
-
 
     }
 
@@ -84,20 +82,18 @@ public class View extends JFrame {
 
         chatPanel.setLayout(new BoxLayout(chatPanel, BoxLayout.Y_AXIS));
 
-        addColoredText(message, "\n----------------------\nRichard: \nNachricht", Color.RED);
-        chatPanel.add(message);
+        chatPanel.setPreferredSize(new Dimension(300, 200));
 
-        addColoredText(message, "\n----------------------\nYou: \nNachricht!!", Color.BLACK);
-        chatPanel.add(message);
-
-
-        chatPanel.setPreferredSize(new Dimension(300, 600));
 
 
         scrollPane = new JScrollPane(chatPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollPane.setPreferredSize(new Dimension(200,300));
+
+        scrollPane.setMinimumSize(new Dimension(160, 150));
+        scrollPane.setPreferredSize(new Dimension(160, 150));
 
         middlePanel.add(scrollPane);
+
+        middlePanel.setPreferredSize(new Dimension(this.getBounds().width/2,this.getBounds().height - chatBarHeaderLine.getHeight()));
 
         textAreaPanel.setPreferredSize(new Dimension(this.getBounds().width/2, 50));
         textAreaPanel.add(chatArea);
@@ -109,6 +105,16 @@ public class View extends JFrame {
         rightSide.add(middlePanel, BorderLayout.CENTER);
         rightSide.setBackground(Color.LIGHT_GRAY);
 
+    }
+
+    public void addMessage(String user, String message, boolean own){
+
+        if(own) {
+            addColoredText(this.message, "\n----------------------\nYou: \n" + message, Color.BLACK);
+        }else {
+            addColoredText(this.message, "\n----------------------\n" + user + ":" + "\n" + message, Color.RED);
+        }
+        chatPanel.add(this.message);
     }
 
     private void settings() {
@@ -130,6 +136,8 @@ public class View extends JFrame {
         catch (BadLocationException e) {
             e.printStackTrace();
         }
+
+
     }
 
 
@@ -194,5 +202,13 @@ public class View extends JFrame {
 
     public JLabel getChatWith() {
         return chatWith;
+    }
+
+    public JPanel getChatPanel() {
+        return chatPanel;
+    }
+
+    public JScrollPane getScrollPane() {
+        return scrollPane;
     }
 }

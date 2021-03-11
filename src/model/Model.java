@@ -4,6 +4,8 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Model {
 
@@ -55,4 +57,10 @@ public class Model {
 
         return remote.getUserNumberFromName(userName);
     }
+
+    public HashMap<String, String> getChats(String userToNumber) throws Exception {
+
+        return remote.getChats(remote.getUserIdFromPhonNumber(this.prhoneNumber), remote.getUserIdFromPhonNumber(userToNumber));
+    }
+
 }

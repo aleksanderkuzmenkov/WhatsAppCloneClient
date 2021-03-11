@@ -8,6 +8,7 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
+import java.util.Map;
 
 public class Controller implements ActionListener, ListSelectionListener {
     private View view;
@@ -33,12 +34,12 @@ public class Controller implements ActionListener, ListSelectionListener {
                 try {
                     // --- send message ---
                     model.sendMessage(model.getUserNumberFromName(view.getMessagesView().getSelectedValue().toString()), view.getChatArea().getText());
+
                 } catch (Exception exception) {
                     exception.printStackTrace();
                 }
             }
         }
-
     }
 
     @Override
@@ -46,6 +47,26 @@ public class Controller implements ActionListener, ListSelectionListener {
         view.getChatWith().setText("");
         view.getChatWith().setText("Chat with " + view.getMessagesView().getSelectedValue().toString());
 
+        // --- TODO clear chat by change ---
+
+        boolean ownMessage;
+
+        try {
+            for (Map.Entry<String, String> entry :model.getChats(model.getUserNumberFromName(view.getMessagesView().getSelectedValue().toString())).entrySet()) {
+
+                if(!entry.getKey().equals(view.getMessagesView().getSelectedValue().toString())){
+                    ownMessage = true;
+                }else{
+                    ownMessage = false;
+                }
+
+                view.addMessage(entry.getKey(), entry.getValue(), ownMessage);
+            }
+
+//            model.sendMessage(model.getUserNumberFromName(view.getMessagesView().getSelectedValue().toString()), view.getChatArea().getText());
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         // --- TODO select data for selected user ---
 
     }
