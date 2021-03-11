@@ -28,12 +28,14 @@ public class Controller implements ActionListener, ListSelectionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals(view.getSendMessage().getActionCommand())){
-            // --- Send massage ---
-            System.out.println("Send massage");
-            try {
-                model.sendMessage(model.getUserNumberFromName(view.getMessagesView().getSelectedValue().toString()), view.getChatArea().getText());
-            } catch (Exception exception) {
-                exception.printStackTrace();
+            // --- check if message input not empty ---
+            if(!view.getChatArea().getText().equals("") || view.getChatArea().getText() != null) {
+                try {
+                    // --- send message ---
+                    model.sendMessage(model.getUserNumberFromName(view.getMessagesView().getSelectedValue().toString()), view.getChatArea().getText());
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
             }
         }
 

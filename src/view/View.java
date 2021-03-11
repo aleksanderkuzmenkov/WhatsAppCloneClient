@@ -1,12 +1,10 @@
 package view;
 
 import javax.swing.*;
+import javax.swing.text.*;
 import java.awt.*;
-import java.io.Writer;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 public class View extends JFrame {
 
@@ -43,10 +41,17 @@ public class View extends JFrame {
 
     private String[] listData;
 
+    DefaultStyledDocument document;
+    private JTextPane message = new JTextPane();
+
+
 
 
     public View(String title, String[] contactList){
         super(title);
+
+
+        settings();
         Container cp = getContentPane();
 
         listData = contactList;
@@ -65,110 +70,68 @@ public class View extends JFrame {
 
 //        cp.add(rightSide, BorderLayout.EAST);
 
-        settings();
 
     }
 
     private void prepareChatBar() {
-
-
-
-        chatBarHeaderLine.setSize(350,200);
+        chatBarHeaderLine.setPreferredSize(new Dimension(this.getBounds().width/2, 35));
         chatBarHeaderLine.setBackground(Color.ORANGE);
 
-        topPanel.add(topInfo.add(chatWith));
+        chatBarHeaderLine.add(topInfo.add(chatWith));
 
+        middlePanel.setPreferredSize(new Dimension(this.getBounds().width/2, this.getBounds().height - chatBarHeaderLine.getHeight()));
         middlePanel.setLayout(new BoxLayout(middlePanel, BoxLayout.Y_AXIS));
 
-        String[] testChatData = {"HEI","Hi","LOL","AHAHAH","HEI","Hi","LOL","AHAHAH","HEI","Hi","LOL","AHAHAH","HEI","Hi","LOL","AHAHAH"};
+        chatPanel.setLayout(new BoxLayout(chatPanel, BoxLayout.Y_AXIS));
 
-//        chatPanel.setLayout(new BoxLayout(chatPanel, BoxLayout.Y_AXIS));
+        addColoredText(message, "\n----------------------\nRichard: \nNachricht", Color.RED);
+        chatPanel.add(message);
 
+        addColoredText(message, "\n----------------------\nYou: \nNachricht!!", Color.BLACK);
+        chatPanel.add(message);
 
-        testPanel.setBackground(Color.red);
-
-        testPanel.add(new JLabel("TESTING"), BorderLayout.PAGE_START);
-
-
-//        chatPanel.add(new JLabel("TEST"));
-//        chatPanel.add(new JLabel("TEST"));
-//        chatPanel.add(new JLabel("TEST"));
-//        chatPanel.add(new JLabel("TEST"));
-//        chatPanel.add(new JLabel("TEST"));
-//        chatPanel.add(new JLabel("TEST"));
-//        chatPanel.add(new JLabel("TEST"));
-        chatPanel.add(testPanel,BorderLayout.PAGE_START);
-
-//        chatPanel.add(new JLabel("TEST"));
-//        chatPanel.add(new JLabel("TEST"));
-//        chatPanel.add(new JLabel("TEST"));
-//        chatPanel.add(new JLabel("TEST"));
-//        chatPanel.add(new JLabel("TEST"));
-//        chatPanel.add(new JLabel("TEST"));
-//        chatPanel.add(new JLabel("TEST"));
-//        chatPanel.add(new JLabel("TEST"));
-//        chatPanel.add(new JLabel("TEST"));
-//        chatPanel.add(new JLabel("TEST"));
-//        chatPanel.add(new JLabel("TEST"));
-//        chatPanel.add(new JLabel("TEST"));
-//        chatPanel.add(new JLabel("TEST"));
-//        chatPanel.add(new JLabel("TEST"));
-//        chatPanel.add(new JLabel("TEST"));
-//        chatPanel.add(new JLabel("TEST"));
-//        chatPanel.add(new JLabel("TEST"));
-//        chatPanel.add(new JLabel("TEST"));
-//        chatPanel.add(new JLabel("TEST"));
-//        chatPanel.add(new JLabel("TEST"));
-//        chatPanel.add(new JLabel("TEST"));
-//        chatPanel.add(new JLabel("TEST"));
-//        chatPanel.add(new JLabel("TEST"));
-//        chatPanel.add(new JLabel("TEST"));
-//        chatPanel.add(new JLabel("TEST"));
-//        chatPanel.add(new JLabel("TEST"));
-//        chatPanel.add(new JLabel("TEST"));
-//        chatPanel.add(new JLabel("TEST"));
-//        chatPanel.add(new JLabel("TEST"));
-//        chatPanel.add(new JLabel("TEST"));
-//        chatPanel.add(new JLabel("TEST"));
-//        chatPanel.add(new JLabel("TEST"));
-//        chatPanel.add(new JLabel("TEST"));
-//        chatPanel.add(new JLabel("TEST"));
-//        chatPanel.add(new JLabel("TEST"));
-//        chatPanel.add(new JLabel("TEST"));
 
         chatPanel.setPreferredSize(new Dimension(300, 600));
-
-//        JList messageList = new JList(testChatData);
 
 
         scrollPane = new JScrollPane(chatPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setPreferredSize(new Dimension(200,300));
 
-
         middlePanel.add(scrollPane);
 
+        textAreaPanel.setPreferredSize(new Dimension(this.getBounds().width/2, 50));
         textAreaPanel.add(chatArea);
         textAreaPanel.add(sendMessage);
 
-
-        JLabel chat = new JLabel("CHaaat");
-
-        chatPanel.setPreferredSize(new Dimension(100, 100) );
-
         middlePanel.add(textAreaPanel);
 
-        rightSide.add(topPanel, BorderLayout.NORTH);
+        rightSide.add(chatBarHeaderLine, BorderLayout.NORTH);
         rightSide.add(middlePanel, BorderLayout.CENTER);
         rightSide.setBackground(Color.LIGHT_GRAY);
-
 
     }
 
     private void settings() {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
-        setSize(900,550);
+        setSize(900,700);
     }
+
+
+    public void addColoredText(JTextPane message, String text, Color color) {
+        StyledDocument doc = this.message.getStyledDocument();
+
+        Style style = this.message.addStyle("Color Style", null);
+        StyleConstants.setForeground(style, color);
+
+        try {
+            doc.insertString(doc.getLength(), text, style);
+        }
+        catch (BadLocationException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void prepareContactListPanel() {
 
